@@ -1,0 +1,11 @@
+name: editdistance
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - seaborn
+  - numpy[version='<2']
+  - tqdm
+  - pandas
+  - editdistance
+prefix: /global/home/users/marissazintel/.conda/envs/editdistance

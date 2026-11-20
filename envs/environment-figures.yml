@@ -1,0 +1,27 @@
+# Environment for figures_notebooks/Figures.ipynb — the notebook that produces
+# every main-text and Extended Data panel. This is the environment a reviewer
+# needs; the other notebooks used separate environments (see envs/README.md).
+#
+# Create and activate:
+#   conda env create -f environment-figures.yml
+#   conda activate designed-ads-figures
+#
+# Versions are pinned to those used to produce the published figures.
+
+name: designed-ads-figures
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.12.3
+  - pandas=2.3.0
+  - numpy=2.3.0
+  - scipy=1.15.2
+  - scikit-learn=1.7.0
+  - statsmodels=0.14.4
+  - matplotlib=3.10.3
+  - seaborn=0.13.2
+  - openpyxl=3.1.5          # writing RegressionTables/TableS6_regression.xlsx
+  - ipykernel=6.29.5        # to run the notebook in Jupyter
+  - jupyterlab

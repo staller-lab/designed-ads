@@ -1,0 +1,13 @@
+name: labtools2407
+channels:
+  - defaults
+dependencies:
+  - python=3.12.4
+  - numpy
+  - pandas=2.2.2
+  - scikit-learn
+  - seaborn
+  - matplotlib
+  - ipykernel
+  - jupyter
+prefix: /global/home/users/marissazintel/.conda/envs/labtools2407

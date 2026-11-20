@@ -1,0 +1,13 @@
+name: sparrow
+channels:
+  - defaults
+dependencies:
+  - seaborn
+  - numpy
+  - pandas
+  - scikit-learn
+  - ipykernel
+  - matplotlib
+  - python
+  - pip
+prefix: /home/music/miniconda3/envs/sparrow

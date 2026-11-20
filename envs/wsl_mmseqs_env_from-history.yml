@@ -1,0 +1,14 @@
+name: mmseqs_env
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - seaborn
+  - mmseqs2
+  - python
+  - pandas
+  - pip
+  - scikit-learn
+  - matplotlib
+  - ipykernel
+prefix: /home/music/miniconda3/envs/mmseqs_env

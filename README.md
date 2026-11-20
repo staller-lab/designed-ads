@@ -20,6 +20,7 @@ HEK293T cells.
 | `data/` | Inputs read by `Figures.ipynb` |
 | `data_predictions/` | Predictor scores and ROC/PRC curve data |
 | `supplementary_tables/` | Supplementary tables |
+| `envs/` | Conda environment files, one per analysis stage |
 
 ## Order of analysis
 
@@ -37,6 +38,190 @@ HEK293T cells.
    (localCIDER), `Cluster_MMSeqs2_50pctidentity.ipynb`,
    `CombinePredictions.ipynb`, and `LevenshteinDistance/`.
 5. **Figures.** `figures_notebooks/Figures.ipynb`.
+
+## Software environments
+
+The analyses ran across three machines, each with its own environment: a
+Windows 11 desktop, WSL2 (Ubuntu) on that same desktop, and the Berkeley Savio
+cluster. The environment files are in `envs/`, exported in two forms —
+`*_from-history.yml` lists only the packages that were explicitly requested and
+is the portable file to install from, while `*_full.yml` records the complete
+solved environment and is the provenance record.
+
+Create any of them with, for example:
+
+```
+conda env create -f envs/environment-figures.yml
+```
+
+| Environment | Machine | Used for |
+|---|---|---|
+| `environment-figures.yml` | Windows 11 | `figures_notebooks/Figures.ipynb` |
+| `flow_*.yml`, `flow_v2_*.yml` | Windows 11 | `flow notebooks/` |
+| `markovml_*.yml` | Windows 11 | `designed AD generation notebooks/` |
+| `multi_*.yml`, `labtools_*.yml` | Windows 11 | General local analysis |
+| `labtools2407_*.yml` | Savio | `sequencing data processing notebooks/` |
+| `editdistance_*.yml` | Savio | `LevenshteinDistance/` |
+| `wsl_localcider_env_*.yml`, `wsl_sparrow_*.yml` | WSL2 Ubuntu | `notebooks/Calculate_Sequence_Features_500k.ipynb` |
+| `wsl_mmseqs_env_*.yml` | WSL2 Ubuntu | `notebooks/Cluster_MMSeqs2_50pctidentity.ipynb` |
+| *(system Python module)* | Savio | `notebooks/` predictor comparison and composition analyses |
+
+### Figures and statistics — `environment-figures.yml` (Windows 11)
+
+Everything needed to reproduce every main-text and Extended Data panel.
+
+| Package | Version |
+|---|---|
+| python | 3.12.3 |
+| numpy | 2.3.0 |
+| pandas | 2.3.0 |
+| scipy | 1.15.2 |
+| scikit-learn | 1.7.0 |
+| statsmodels | 0.14.4 |
+| matplotlib | 3.10.3 |
+| seaborn | 0.13.2 |
+| openpyxl | 3.1.5 |
+
+### Flow cytometry — `flow`, `flow_v2` (Windows 11)
+
+| Package | Version |
+|---|---|
+| python | 3.11.11 |
+| FlowCal | 1.3.1 |
+| numpy | 2.3.5 |
+| pandas | 2.3.3 |
+| statsmodels | 0.14.6 |
+| matplotlib | 3.11.2 |
+| seaborn | 0.13.2 |
+
+### Sequence generation — `markovml` (Windows 11)
+
+| Package | Version |
+|---|---|
+| python | 3.12.4 |
+| markovify | 0.9.4 |
+| localCIDER | 0.1.21 |
+| numpy | 2.1.0 |
+| pandas | 2.2.2 |
+| scipy | 1.14.1 |
+| scikit-learn | 1.5.1 |
+| matplotlib | 3.9.2 |
+
+### Sort-seq read processing — `labtools2407` (Savio)
+
+Reads were merged with **PEAR 0.9.11** before processing.
+
+| Package | Version |
+|---|---|
+| python | 3.12.4 |
+| numpy | 1.26.4 |
+| pandas | 2.2.2 |
+| scipy | 1.13.1 |
+| scikit-learn | 1.4.2 |
+| matplotlib | 3.8.4 |
+| seaborn | 0.13.2 |
+
+`labtools` itself is not on PyPI or conda and is therefore absent from the
+environment file. Install it from source:
+
+```
+conda activate labtools2407
+pip install git+https://github.com/staller-lab/labtools.git
+```
+
+### Edit distance — `editdistance` (Savio)
+
+| Package | Version |
+|---|---|
+| python | 3.11.15 |
+| editdistance | 0.8.1 |
+| numpy | 1.26.4 |
+| pandas | 3.0.2 |
+| scipy | 1.17.1 |
+| tqdm | 4.67.3 |
+
+### Sequence features and clustering (WSL2, Ubuntu)
+
+localCIDER, metapredict, sparrow and MMseqs2 were run under WSL2 rather than
+Windows, in three separate environments: `wsl_localcider_env_*.yml`,
+`wsl_sparrow_*.yml` and `wsl_mmseqs_env_*.yml`.
+
+**`localcider_env`** — localCIDER sequence features
+
+| Package | Version |
+|---|---|
+| python | 3.15.2 |
+| localCIDER | 0.1.21 |
+| biopython | 1.88 |
+| numpy | 2.5.4 |
+| pandas | 3.1.0 |
+| scipy | 1.18.1 |
+| matplotlib | 3.11.2 |
+| statsmodels | 0.15.0 |
+
+**`sparrow`** — sparrow and metapredict
+
+| Package | Version |
+|---|---|
+| python | 3.14.7 |
+| sparrow | 0.2.2 (commit `03aa232`) |
+| metapredict | 3.0.2 |
+| protfasta | 0.1.23 |
+| idptools-parrot | 1.7.6 (commit `8d5c671`) |
+| torch | 2.13.0 |
+| numpy | 2.5.1 |
+| pandas | 3.0.5 |
+| scipy | 1.18.0 |
+| scikit-learn | 1.9.0 |
+| matplotlib | 3.11.0 |
+
+**`mmseqs_env`** — sequence clustering
+
+| Package | Version |
+|---|---|
+| python | 3.14.7 |
+| MMseqs2 | 18.8cc5c |
+| numpy | 2.5.2 |
+| pandas | 3.0.5 |
+| scipy | 1.18.0 |
+| scikit-learn | 1.9.0 |
+| matplotlib | 3.11.1 |
+| statsmodels | 0.14.6 |
+
+### Predictor comparison — Savio system Python
+
+The notebooks in `notebooks/` that compare predictor outputs ran against the
+cluster's Python module rather than a conda environment, so they have no
+environment file.
+
+| Package | Version |
+|---|---|
+| python | 3.10.10 (Savio module `langs/python/3.10`, Scientific Linux 7 stack) |
+| numpy | 1.23.5 |
+| pandas | 1.5.3 |
+| scipy | 1.10.0 |
+| matplotlib | 3.7.0 |
+| seaborn | 0.12.2 |
+
+That software stack has since been retired on Savio in favour of Rocky
+Linux 8. These versions are recorded for provenance; the analyses do not depend
+on the stack and the versions can be installed anywhere.
+
+### Activation-domain predictors
+
+PADDLE, TADA, ADhunterLite, ADhunterEnsemble and the Kotha composition model
+were run from the source released with their respective publications rather
+than as installed packages, so they carry no version numbers. ADpred was
+installed as a conda package, version 1.3.1. Model development and the
+proteome-scale predictor runs are in
+[Madrigal-development](https://github.com/staller-lab/Madrigal-development).
+
+### A note on versions
+
+These environments were exported after the analyses were complete, so some
+package versions are newer than those used at the time; where an executed
+notebook's own metadata differs, the notebook metadata reflects the version
+that produced the published result.
 
 ## Key data files
 
@@ -117,9 +302,10 @@ outside this repository; change that path or create the folder before
 running. Panels not included in the submission are saved with a
 `NOTINCLUDED_` prefix.
 
-Requires: pandas, numpy, scipy, scikit-learn, statsmodels, matplotlib,
-seaborn. Other notebooks additionally need localCIDER, FlowCal, markovify,
-editdistance, MMseqs2, and the Staller lab
+Create the environment with
+`conda env create -f envs/environment-figures.yml`; the pinned versions are
+listed under "Software environments" above. Other notebooks use the other
+environments in `envs/`, and additionally need MMseqs2 and the Staller lab
 [labtools](https://github.com/staller-lab/labtools) package.
 
 ## Notes

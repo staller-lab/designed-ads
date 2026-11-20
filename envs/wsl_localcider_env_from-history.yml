@@ -1,0 +1,14 @@
+name: localcider_env
+channels:
+  - defaults
+dependencies:
+  - python
+  - seaborn
+  - tqdm
+  - jupyter
+  - pandas
+  - ipykernel
+  - scipy
+  - numpy
+  - matplotlib
+prefix: /home/music/miniconda3/envs/localcider_env

@@ -1,0 +1,16 @@
+name: flow
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - jupyterlab
+  - matplotlib
+  - notebook
+  - numpy
+  - pandas
+  - ipympl
+  - ipykernel
+  - seaborn
+  - matplotlib-inline
+  - pillow
+prefix: C:\Users\music\miniforge3\envs\flow
