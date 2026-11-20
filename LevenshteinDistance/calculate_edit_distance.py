@@ -19,9 +19,9 @@ Differences from the notebook version:
 
 Usage
 -----
-  python edit_distance_claude.py --inspect
-  python edit_distance_claude.py --target train --workers $SLURM_CPUS_PER_TASK
-  python edit_distance_claude.py --target self --merge --outdir results
+  python calculate_edit_distance.py --inspect
+  python calculate_edit_distance.py --target train --workers $SLURM_CPUS_PER_TASK
+  python calculate_edit_distance.py --target self --merge --outdir results
 """
 
 import argparse

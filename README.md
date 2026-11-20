@@ -231,7 +231,7 @@ that produced the published result.
 | `data/Controls_supptable_allactivities.csv` | Controls library activities, used to harmonize across sorts |
 | `data/allactivities_seqs_in_sort2.csv` | Per-sequence activities from the Sort 2 ratio sort |
 | `data/SynAD_Glu_2_allinfo.csv` | Per-barcode reads and bin distributions |
-| `data/MinSynth500K_to_*.csv` | Minimum edit distance to each reference set |
+| `data/MinSynth_to_Proteome.csv`, `data/MinSynth_to_Train.csv`, `data/Synthetics_min_edit_dist.csv` | Minimum edit distance from the designed sequences to the proteome, to the training set, and within the designed set |
 | `data/*_Yeast14byBCrep_AD_ID.csv` | Per-barcode yeast measurements for the 14 retested designs |
 | `data/HEK293T14_{EpCAM,ICAM1}_AD_ID.csv` | HEK293T CRISPRa flow results |
 | `data/Plant_Yeast14byBCrep_AD_ID.csv` | *N. benthamiana* leaf measurements |
@@ -264,24 +264,34 @@ paper. It can also be rebuilt from the per-predictor files above with
 
 **`500k_AA_SS_seqfeats.csv`** — all 500,000 generated sequences with state
 size and localCIDER features. Generate with
-`notebooks/Calculate_Sequence_Features_500k.ipynb`.
+`notebooks/Calculate_Sequence_Features_500k.ipynb`, using the generated
+sequences from Supplementary Table 1 as input.
 
 **`MinSynth500K_to_*.csv`** — minimum edit distance from the generated
 sequences to each reference set (`proteome`, `choptf`, `train`,
 `synth18750`, `self`). Generate with
 `LevenshteinDistance/calculate_edit_distance.py`; see
-`LevenshteinDistance/editdist.sbatch` for the cluster job used here.
+`LevenshteinDistance/editdist.sbatch` for the cluster job used here. The
+query and reference paths are set at the top of the script, under `BASE`,
+`QUERY_PATH` and `TARGETS`, and point at the cluster directories used for
+this study; edit them to your own copies before running. The query set is the
+500,000 generated sequences from Supplementary Table 1, and the reference sets
+are the tiled proteome, the Markov chain training sequences, the ChopTF set
+and the 18,750 designed sequences.
 
 **`consensus_model_all_six_predictions.tsv`** — six-predictor scores for
 230,302 natural transcription factors. Generate with
 [madrigal-predictor](https://pypi.org/project/madrigal-predictor/), run over
-the natural transcription factor sequences (sourced externally, not included
-here). `synthetic_experimental_and_preds_w_parrot.csv` can be produced the
-same way.
+the natural transcription factor sequences, which are distributed in
+[Madrigal-development](https://github.com/staller-lab/Madrigal-development)
+under `compressed_data/` as `cl_seqs.fasta.gz` (Y1000+ fungal),
+`PlantTFDB-all_TF_pep.fas.gz` (plant) and
+`interpro_uniprot_evid_1_2.fasta.gz` (metazoan).
+`synthetic_experimental_and_preds_w_parrot.csv` can be produced the same way.
 
-`Figures.ipynb` will raise `FileNotFoundError` on the data-loading cell
-until these files are present at the relative paths listed in the tables
-above. Every other notebook runs without them.
+Place these files at the relative paths listed in the tables above before
+running `Figures.ipynb`, whose data-loading cell reads them directly. Every
+other notebook runs without them.
 
 ### Externally sourced data
 
@@ -310,8 +320,7 @@ environments in `envs/`, and additionally need MMseqs2 and the Staller lab
 
 ## Notes
 
-- Some notebooks contain absolute paths from the original machine. They record where each analysis was
-  run and are not expected to resolve natively on another system.
-- `LevenshteinDistance/editdist.sbatch` refers to the edit distance script by
-  an earlier name; the script in this repository is
-  `calculate_edit_distance.py`.
+- Some notebooks load data using absolute paths from the machine each analysis
+  was run on, which record where the work was done. Point them at your own
+  copies of the files before running those notebooks. `Figures.ipynb` uses
+  relative paths and needs no changes.

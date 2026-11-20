@@ -10,15 +10,15 @@
 #SBATCH --output=logs/%x_%A_%a.out
 #SBATCH --error=logs/%x_%A_%a.out
 
-# Usage (run from the directory holding edit_distance_claude.py):
+# Usage (run from the directory holding calculate_edit_distance.py):
 #   mkdir -p logs results
-#   sbatch --job-name=ed_choptf   --export=ALL,TARGET=choptf   editdist_claude.sbatch
-#   sbatch --job-name=ed_train    --export=ALL,TARGET=train    editdist_claude.sbatch
-#   sbatch --job-name=ed_proteome --export=ALL,TARGET=proteome editdist_claude.sbatch
-#   sbatch --job-name=ed_self --array=0-3 --export=ALL,TARGET=self editdist_claude.sbatch
+#   sbatch --job-name=ed_choptf   --export=ALL,TARGET=choptf   editdist.sbatch
+#   sbatch --job-name=ed_train    --export=ALL,TARGET=train    editdist.sbatch
+#   sbatch --job-name=ed_proteome --export=ALL,TARGET=proteome editdist.sbatch
+#   sbatch --job-name=ed_self --array=0-3 --export=ALL,TARGET=self editdist.sbatch
 #
 # After an array job:
-#   python edit_distance_claude.py --target self --merge --outdir results
+#   python calculate_edit_distance.py --target self --merge --outdir results
 
 set -euo pipefail
 
@@ -38,7 +38,7 @@ export MKL_NUM_THREADS=1
 echo "host=$(hostname) target=$TARGET shard=$SHARD/$NSHARDS cpus=${SLURM_CPUS_PER_TASK}"
 python -c "import editdistance, pandas, numpy; print('deps ok')"
 
-python edit_distance_claude.py \
+python calculate_edit_distance.py \
     --target "$TARGET" \
     --outdir "$OUTDIR" \
     --workers "${SLURM_CPUS_PER_TASK}" \
